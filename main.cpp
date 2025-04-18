@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 int main() {
-	printf("Hello PG3");
-
+	printf("金子の金子による金子だけの祭典");
 	return 0;
 }
