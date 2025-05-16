@@ -1,65 +1,57 @@
-#include <stdio.h>
-#include <windows.h>
+#include<stdio.h>
+#include<Windows.h>
 #include <time.h>
+#include <functional>
 
-typedef void(*PFunc)(int*, int*);
 
-// コールバック関数
-void DispResult(int* s, int* kazu) {
+//コールバック関数
+void DispResult(int* s, int* kye) {
+	int dice = rand() % 2;
 
-	int kekka = rand() % 2;
-
-	if (kekka == *kazu) {
-		if (kekka == 0)
-			printf("%dで丁（偶数）でした!大当たり!!\n", kekka);
+	if (dice == *kye) {
+		if (dice == 0)
+			printf("%dで丁(偶数)でした。当たり", dice);
 		else
-			printf("%dで半（奇数）でした!大当たり!!\n", kekka);
+			printf("%dで半(奇数)でした。当たり", dice);
 	}
 	else {
-		if (kekka == 0)
-			printf("%dで丁（偶数）でした!残念!!\n", kekka);
+		if (dice == 1)
+			printf("%dで半(奇数)でした。はずれ", dice);
 		else
-			printf("%dで半（奇数）でした!残念!!\n", kekka);
+			printf("%dで丁(偶数)でした。はずれ", dice);
 	}
 
 }
 
-// コールバック関数を呼び出す
-void setTimeout(PFunc p, int second, int kazu) {
-
-	puts("さて結果は…\n");
-
+void setTimeout(std::function<void(int*, int*)>p, int second, int kye) {
+	//コールバック関数を呼び出す
 	for (int i = 0; i < second; i++) {
 		Sleep(1000);
 		printf("%d...\n", second - i);
 	}
 
-	p(&second, &kazu);
-}
 
+	p(&second, &kye);
+}
 
 int main() {
 
-	int kazu;
+	int kye;
 
 	srand(static_cast<unsigned int>(time(NULL)));
+	printf("丁(偶数)なら0、半(奇数)なら1を打つ\n");
+	scanf_s("%d", &kye);
 
-	printf("丁（偶数）ならゼロ、半（奇数）なら1を入力してください\n");
-	scanf_s("%d", &kazu);
-
-	if (kazu == 0) {
-		puts("あなたは丁（偶数）を選びましたね？");
+	if (kye == 0) {
+		puts("あなたは丁(偶数)を選びました");
 	}
 	else {
-		puts("あなたは半（奇数）を選びましたね？");
+		puts("あなたは半(奇数)を選びました");
 	}
 
-	PFunc p;
-	p = DispResult;
-	setTimeout(p, 3, kazu);
-
+	std::function<void(int*, int*)> p = [](int* s, int* kye) {
+		DispResult(s, kye);
+		};
 	return 0;
-}
-
-
+};
 
