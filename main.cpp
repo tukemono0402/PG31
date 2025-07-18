@@ -1,34 +1,21 @@
-#include <cstdio>
+#include <iostream>
+#include <thread>
+
 using namespace std;
 
-class Animal { // 動物クラス
-public:
-    virtual void sound() const = 0;  // 純粋仮想関数
-};
-
-class Dog : public Animal { // 犬クラス
-public:
-    void sound() const override {
-        printf("イヌ鳴き声：ワン\n");
-    }
-};
-
-class Cat : public Animal { // 猫クラス
-public:
-    void sound() const override {
-        printf("ネコ鳴き声:ニャー\n");
-    }
-};
+void PrintThread(uint32_t num) {
+	cout << "thread" << num << endl;
+}
 
 int main() {
-    Animal* animal1 = new Dog(); // 犬クラス
-    Animal* animal2 = new Cat(); // 猫クラス
+	thread t1(PrintThread, 1);
+	t1.join();  // t1を待つ
 
-    animal1->sound();
-    animal2->sound();
+	thread t2(PrintThread, 2);
+	t2.join();  // t2を待つ
 
-    delete animal1;
-    delete animal2;
+	thread t3(PrintThread, 3);
+	t3.join();  // t3を待つ
 
-    return 0;
+	return 0;
 }
